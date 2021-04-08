@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 struct projeto{
 	string nome;
@@ -15,7 +16,7 @@ struct cliente{
 	int telefone;
 	projeto lista;
 };
-void cadastro(Vector<cliente> &R, string nome, int cpf, string endereco, int telefone, string nom, int datai, int dataf, float preco, float pago, float receber){
+void cadastro(vector<cliente> &R, string nome, int cpf, string endereco, int telefone, string nom, int datai, int dataf, float preco, float pago, float receber){
 	cliente T;
 	T.nome = nome;
 	T.cpf = cpf;
@@ -42,7 +43,7 @@ int main(){
 		if (x==1){
 			cout << "Digite o nome do cliente: ";
 			cin >> nome;
-			cout << ""
+			cout << "";
 		}
 		if (x==2){
 			cout << "b" << endl;
