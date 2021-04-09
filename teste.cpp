@@ -4,17 +4,16 @@ using namespace std;
 
 struct projeto{
 	string nome;
-	int datai;
-	int dataf;
+	string datai;
+	string dataf;
 	float preco;
 	float pago;
-	float receber;
 };
 
 struct cliente{
 	string nome;
 	int cpf;
-	char endereco[500];
+	string endereco;
 	int telefone;
 	projeto lista;
 };
@@ -25,7 +24,7 @@ struct cel{
 };
 typedef struct cel no;
 typedef no *arvore;
-void inserir (arvore &r, int c, string nome, int tel, char end){
+void inserir (arvore &r, int c, string nome, int tel, string end){
     if(r==NULL){
 		r = new no;
 		r->conteudo.cpf = c;
@@ -44,54 +43,51 @@ void inserir (arvore &r, int c, string nome, int tel, char end){
 		}
     }
 }
-no *busca(arvore r, int k){
-	if(r==NULL || r->conteudo.cpf == k)
+/*no *busca(arvore r, int k){
+	if(r==NULL || r->conteudo.nome == k)
 		return r;
-	if(r->conteudo.cpf > k)
+	if(r->conteudo.nome > k)
 		return busca(r->esq, k);
 	else
 		return busca(r->dir, k);
-}
+}*/
 int main(){
 	arvore r; r = NULL;
-	int x;
-	string nome;
-	char end[500];
-	int c, tel;
-	float preco, pago, receber;
+	cliente a;
+	string nome, end;
+	int x, c, tel;
 	cout << "Menu" << endl;
 	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor já recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda não foram pagos\n0 - Encerrar o programa\n";
 	cin >> x;
 	while (x!=0){
 		if (x==1){
-			cout << "Digite o nome do cliente: ";
+			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
 			cin >> nome;
 			cout << "Digite o CPF(apenas números): ";
 			cin >> c;
 			cout << "Digite o telefone(apenas números): ";
 			cin >> tel;
-			cout << "Digite o endereço: ";
+			cout << "Digite o endereço(use _ em vez de espaço): ";
 			cin >> end;
 			inserir(r, c, nome, tel, end);
 		}
 		if (x==2){
-			cout << "Digite o CPF: ";
-			cin >> c;
-			arvore a = busca(r, c);
-			if (a==NULL){
-				cout << "Nao encontrado!" << endl;
-				system("pause");
-			}
-			else {
-				cout << "Nome: " << a->conteudo.nome << endl;
-				cout << "CPF: " << a->conteudo.cpf << endl;
-				cout << "Telefone: " << a->conteudo.telefone << endl;
-				cout << "Endereco: " << a->conteudo.endereco << endl;
-			}
-			system("pause");
+			cout << "Digite o nome do projeto(use _ em vez de espaço): ";
+			cin >> a.lista.nome;
+			cout << "Digite a data inicial do projeto: ";
+			cin >> a.lista.datai;
+			cout << "Digite a data fianl do projeto: ";
+			cin >> a.lista.dataf;
+			cout << "Digite o preço total do projeto: ";
+			cin >> a.lista.preco;
+			cout << "Digite o valor recebido do projeto: ";
+			cin >> a.lista.pago;
+			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
+			cin >> a.nome;
+			
 		}
 		if (x==3){
-			cout << "c" << endl;
+			cout << r->conteudo.nome << endl;
 		}
 		if (x==4){
 			cout << "d" << endl;
