@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
 struct projeto{
 	string nome;
 	int datai;
@@ -9,6 +10,7 @@ struct projeto{
 	float pago;
 	float receber;
 };
+
 struct cliente{
 	string nome;
 	int cpf;
@@ -16,6 +18,7 @@ struct cliente{
 	int telefone;
 	projeto lista;
 };
+
 void cadastro(vector<cliente> &R, string nome, int cpf, string endereco, int telefone, string nom, int datai, int dataf, float preco, float pago, float receber){
 	cliente T;
 	T.nome = nome;
@@ -30,6 +33,7 @@ void cadastro(vector<cliente> &R, string nome, int cpf, string endereco, int tel
 	T.lista.receber = receber;
 	R.push_back(T);
 }
+
 int main(){
 	int x;
 	vector<cliente> R;
