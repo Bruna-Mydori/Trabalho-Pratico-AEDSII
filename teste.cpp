@@ -16,31 +16,36 @@ struct cliente{
 	string endereco;
 	int telefone;
 	projeto lista;
+	struct cliente *esq;
+    struct cliente *dir;
 };
-struct cel{
-    struct cliente conteudo;
-    struct cel *esq;
-    struct cel *dir;
-};
-typedef struct cel no;
+
+typedef struct cliente no;
 typedef no *arvore;
 void inserir (arvore &r, int c, string nome, int tel, string end){
     if(r==NULL){
 		r = new no;
-		r->conteudo.cpf = c;
-		r->conteudo.nome = nome;
-		r->conteudo.telefone = tel;
-		r->conteudo.endereco = end;
+		r->cpf = c;
+		r->nome = nome;
+		r->telefone = tel;
+		r->endereco = end;
 		r->esq = NULL;
 		r->dir = NULL;
     }
    else {
-		if(c < r->conteudo.cpf){
+		if(nome < r->nome){
 			inserir(r->esq, c, nome, tel, end);
 		}
 		else{
 			inserir(r->dir,c, nome, tel, end);
 		}
+    }
+}
+void erd(arvore r){
+    if(r!=NULL){
+        erd(r->esq);
+        cout << "- " << r->nome << endl;
+        erd(r->dir);
     }
 }
 /*no *busca(arvore r, int k){
@@ -84,16 +89,25 @@ int main(){
 			cin >> a.lista.pago;
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
 			cin >> a.nome;
-			
 		}
 		if (x==3){
-			cout << r->conteudo.nome << endl;
+			erd(r);
+			system("pause");
 		}
 		if (x==4){
 			cout << "d" << endl;
 		}
 		if (x==5){
-			cout << "e" << endl;
+			cout << "Digite um nome: ";
+			cin >> nome;
+			if(nome==a.nome){
+				cout << "Nome projeto: " << a.lista.nome << endl;
+				cout << "Data inicial: " << a.lista.datai << endl;
+				cout << "Data final: " << a.lista.dataf << endl;
+				cout << "Valor: " << a.lista.preco << endl;
+				cout << "Pago: " << a.lista.pago << endl;
+				system("pause");
+			}
 		}
 		if (x==6){
 			cout << "f" << endl;
