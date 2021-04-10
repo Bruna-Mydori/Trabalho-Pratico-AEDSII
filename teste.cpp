@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
 using namespace std;
 
 struct projeto{
@@ -48,6 +51,15 @@ void erd(arvore r){
         erd(r->dir);
     }
 }
+
+void red(cliente a){
+    if(cliente a!=NULL){
+        erd(a->esq);
+        cout << "- " << a.lista.nome << endl;
+        erd(a->dir);
+    }
+}
+
 /*no *busca(arvore r, int k){
 	if(r==NULL || r->conteudo.nome == k)
 		return r;
@@ -61,8 +73,8 @@ int main(){
 	cliente a;
 	string nome, end;
 	int x, c, tel;
-	cout << "|Menu|" << endl;
-	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor ja recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda nao foram pagos\n0 - Encerrar o programa\n";
+	cout << "Menu" << endl;
+	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor já recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda não foram pagos\n0 - Encerrar o programa\n";
 	cin >> x;
 	while (x!=0){
 		if (x==1){
@@ -95,7 +107,8 @@ int main(){
 			system("pause");
 		}
 		if (x==4){
-			cout << "d" << endl;
+			red(cliente a);
+			system("pause");
 		}
 		if (x==5){
 			cout << "Digite um nome: ";
