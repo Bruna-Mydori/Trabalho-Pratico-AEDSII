@@ -5,22 +5,21 @@
 #include <stdlib.h>
 using namespace std;
 
+struct cliente{
+	string nome;
+	int cpf;
+	string endereco;
+	int telefone;
+	struct cliente *esq;
+    struct cliente *dir;
+};
 struct projeto{
 	string nome;
 	string datai;
 	string dataf;
 	float preco;
 	float pago;
-};
-
-struct cliente{
-	string nome;
-	int cpf;
-	string endereco;
-	int telefone;
-	projeto lista;
-	struct cliente *esq;
-    struct cliente *dir;
+	cliente lista;
 };
 
 typedef struct cliente no;
@@ -51,28 +50,59 @@ void erd(arvore r){
         erd(r->dir);
     }
 }
-
-void red(cliente a){
-    if(cliente a!=NULL){
-        erd(a->esq);
-        cout << "- " << a.lista.nome << endl;
-        erd(a->dir);
-    }
+void cadastro(vector<projeto> &R, string nome, string datai, string dataf, float preco, float pago){
+	projeto T;
+	T.nome = nome;
+	T.datai = datai;
+	T.dataf = dataf;
+	T.preco = preco;
+	T.pago = pago;
+	R.push_back(T);
+}
+void imprime(vector <projeto> &R){
+	for (int q=0; q<R.size(); q++){
+		cout << R[q].nome << endl;
+	}
 }
 
-/*no *busca(arvore r, int k){
-	if(r==NULL || r->conteudo.nome == k)
+no *busca(arvore r, string k){
+	if(r==NULL || r->nome == k)
 		return r;
-	if(r->conteudo.nome > k)
+	if(r->nome > k)
 		return busca(r->esq, k);
 	else
 		return busca(r->dir, k);
+}
+/*int particao(vector<projeto> &R, int inicio, int fim) {
+	int pivo = R[fim];
+ 	int i = inicio;
+ 	int j = fim-1;
+ 	while( i <= j ){
+ 		while( R[i] < pivo )
+ 			i++;
+ 		while( j >= inicio && R[j] >= pivo )
+ 			j--;
+ 		if( i < j )
+ 		swap(R[i], V[j]);
+ 	}
+ 	swap(R[fim], V[i]);
+ 	return i;
+}
+void quickSort(vector<projeto> &R, int inicio, int fim) {
+	if (inicio < fim){
+		int corte = particao(R, inicio, fim);
+		quickSort(R, inicio, corte - 1);
+		quickSort(R, corte + 1, fim);
+	}
 }*/
+
 int main(){
 	arvore r; r = NULL;
-	cliente a;
-	string nome, end;
+	vector<projeto> R;
+	projeto T;
+	string nome, end, datai, dataf, n;
 	int x, c, tel;
+	float preco, pago;
 	cout << "Menu" << endl;
 	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor já recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda não foram pagos\n0 - Encerrar o programa\n";
 	cin >> x;
@@ -89,29 +119,38 @@ int main(){
 			inserir(r, c, nome, tel, end);
 		}
 		if (x==2){
-			cout << "Digite o nome do projeto(use _ em vez de espaço): ";
-			cin >> a.lista.nome;
-			cout << "Digite a data inicial do projeto: ";
-			cin >> a.lista.datai;
-			cout << "Digite a data fianl do projeto: ";
-			cin >> a.lista.dataf;
-			cout << "Digite o preço total do projeto: ";
-			cin >> a.lista.preco;
-			cout << "Digite o valor recebido do projeto: ";
-			cin >> a.lista.pago;
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
-			cin >> a.nome;
+			cin >> n;
+			busca(r, n);
+			if(nome==n){
+				cout << "Digite o nome do projeto(use _ em vez de espaço): ";
+				cin >> nome;
+				cout << "Digite a data inicial do projeto: ";
+				cin >> datai;
+				cout << "Digite a data fianl do projeto: ";
+				cin >> dataf;
+				cout << "Digite o preço total do projeto: ";
+				cin >> preco;
+				cout << "Digite o valor recebido do projeto: ";
+				cin >> pago;
+				cadastro(R, nome, datai, dataf, preco, pago);
+			}
+			else{
+				cout << "Cliente nao encontrado.";
+				system("pause");
+			}
 		}
 		if (x==3){
 			erd(r);
 			system("pause");
 		}
 		if (x==4){
-			red(cliente a);
+			cout << "Nome dos projetos" << endl;
+			imprime(R);
 			system("pause");
 		}
 		if (x==5){
-			cout << "Digite um nome: ";
+			/*cout << "Digite um nome: ";
 			cin >> nome;
 			if(nome==a.nome){
 				cout << "Nome projeto: " << a.lista.nome << endl;
@@ -120,7 +159,7 @@ int main(){
 				cout << "Valor: " << a.lista.preco << endl;
 				cout << "Pago: " << a.lista.pago << endl;
 				system("pause");
-			}
+			}*/
 		}
 		if (x==6){
 			cout << "f" << endl;
