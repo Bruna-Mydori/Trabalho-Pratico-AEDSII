@@ -73,6 +73,16 @@ no *busca(arvore r, string k){
 	else
 		return busca(r->dir, k);
 }
+
+void exclui(vector <projeto> &R, string re){
+  for (int q=0; q< R.size();q++){
+          if (R[q].nome==re){
+              R.erase(R.begin()+q);
+        }
+    }
+}
+
+
 /*int particao(vector<projeto> &R, int inicio, int fim) {
 	int pivo = R[fim];
  	int i = inicio;
@@ -100,21 +110,21 @@ int main(){
 	arvore r; r = NULL;
 	vector<projeto> R;
 	projeto T;
-	string nome, end, datai, dataf, n;
+	string nome, end, datai, dataf, n, re, cliente;
 	int x, c, tel;
 	float preco, pago;
-	cout << "Menu" << endl;
-	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor já recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda não foram pagos\n0 - Encerrar o programa\n";
+	cout << "|Menu|" << endl;
+	cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor ja recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda nao foram pagos\n0 - Encerrar o programa\n";
 	cin >> x;
 	while (x!=0){
 		if (x==1){
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
 			cin >> nome;
-			cout << "Digite o CPF(apenas números): ";
+			cout << "Digite o CPF(apenas numeros): ";
 			cin >> c;
-			cout << "Digite o telefone(apenas números): ";
+			cout << "Digite o telefone(apenas numeros): ";
 			cin >> tel;
-			cout << "Digite o endereço(use _ em vez de espaço): ";
+			cout << "Digite o endereco(use _ em vez de espaço): ";
 			cin >> end;
 			inserir(r, c, nome, tel, end);
 		}
@@ -127,7 +137,7 @@ int main(){
 				cin >> nome;
 				cout << "Digite a data inicial do projeto: ";
 				cin >> datai;
-				cout << "Digite a data fianl do projeto: ";
+				cout << "Digite a data final do projeto: ";
 				cin >> dataf;
 				cout << "Digite o preço total do projeto: ";
 				cin >> preco;
@@ -145,7 +155,29 @@ int main(){
 			system("pause");
 		}
 		if (x==4){
-			cout << "Nome dos projetos" << endl;
+			/*int particao(vector<projeto> &R, int inicio, int fim){
+				int pivo = R[fim];
+			 	int i = inicio;
+			 	int j = fim-1;
+			 	while( i <= j ){
+			 		while( R[i] < pivo )
+			 			i++;
+			 		while( j >= inicio && R[j] >= pivo )
+			 			j--;
+			 		if( i < j )
+			 		swap(R[i], V[j]);
+ 					}
+ 				swap(R[fim], V[i]);
+ 				return i;
+				}
+			void quickSort(vector<projeto> &R, int inicio, int fim) {
+				if (inicio < fim){
+					int corte = particao(R, inicio, fim);
+					quickSort(R, inicio, corte - 1);
+					quickSort(R, corte + 1, fim);
+				}
+			}*/
+			cout << "|Nome dos projetos|" << endl;
 			imprime(R);
 			system("pause");
 		}
@@ -174,16 +206,20 @@ int main(){
 			cout << "i" << endl;
 		}
 		if (x==10){
-			cout << "j" << endl;
+			cout << "Digite o nome do projeto(use _ em vez de espaço): ";
+			cin >> re;
+			exclui(R, re);	
 		}
 		if (x==11){
-			cout << "k" << endl;
+			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
+			cin >> cliente;
+			
 		}
 		if (x==12){
 			cout << "l" << endl;
 		}
 		system("cls");
-		cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor já recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda não foram pagos\n0 - Encerrar o programa\n";
+		cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor ja recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda nao foram pagos\n0 - Encerrar o programa\n";
 		cin >> x;
 	}
 	cout << "Programa encerrado" << endl;
