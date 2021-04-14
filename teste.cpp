@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <string>
 using namespace std;
 
 struct cliente{
@@ -59,11 +60,6 @@ void cadastro(vector<projeto> &R, string nome, string datai, string dataf, float
 	T.pago = pago;
 	R.push_back(T);
 }
-void imprime(vector <projeto> &R){
-	for (int q=0; q<R.size(); q++){
-		cout << R[q].nome << endl;
-	}
-}
 
 no *busca(arvore r, string k){
 	if(r==NULL || r->nome == k)
@@ -81,34 +77,48 @@ void exclui(vector <projeto> &R, string re){
         }
     }
 }
-
-
-/*int particao(vector<projeto> &R, int inicio, int fim) {
-	int pivo = R[fim];
- 	int i = inicio;
- 	int j = fim-1;
- 	while( i <= j ){
- 		while( R[i] < pivo )
- 			i++;
- 		while( j >= inicio && R[j] >= pivo )
- 			j--;
- 		if( i < j )
- 		swap(R[i], V[j]);
- 	}
- 	swap(R[fim], V[i]);
- 	return i;
+/*removeraiz (arvore r) {  
+    no *p, *q;
+    if (r->esq == NULL) {
+       q = r->dir;
+       free (r);
+       return q;
+    }
+    p = r; q = r->esq;
+    while (q->dir != NULL) {
+       p = q; q = q->dir;
+    }
+    // q é nó anterior a r na ordem e-r-d
+    // p é pai de q
+    if (p != r) {
+       p->dir = q->esq;
+       q->esq = r->esq;
+    }
+    q->dir = r->dir;
+    free (r);
+    return q;
 }
-void quickSort(vector<projeto> &R, int inicio, int fim) {
-	if (inicio < fim){
-		int corte = particao(R, inicio, fim);
-		quickSort(R, inicio, corte - 1);
-		quickSort(R, corte + 1, fim);
+/*void ordena(vector<projeto>&R){
+    int menor;
+    vector<string> q;
+    for(int a=0; a<R.size(); a++){
+    	string coisa = R[a].nome;
+    	q.push_back(coisa);
 	}
+    for(int i=0; i<q.size(); i++){
+        menor = i;
+        for(int j = i+1; j<q.size(); j++){
+            if(q[j]<q[menor])
+                menor = j;
+        }
+        swap(q[i], q[menor]);
+    }
 }*/
 
 int main(){
 	arvore r; r = NULL;
 	vector<projeto> R;
+	vector<projeto> V;
 	projeto T;
 	string nome, end, datai, dataf, n, re, cliente;
 	int x, c, tel;
@@ -178,7 +188,7 @@ int main(){
 				}
 			}*/
 			cout << "|Nome dos projetos|" << endl;
-			imprime(R);
+			//ordena(R);
 			system("pause");
 		}
 		if (x==5){
