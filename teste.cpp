@@ -6,6 +6,14 @@
 #include <string>
 using namespace std;
 
+struct projeto{
+	string nomep;
+	string datai;
+	string dataf;
+	float preco;
+	float pago;
+	string nomec;
+};
 struct cliente{
 	string nome;
 	int cpf;
@@ -13,14 +21,7 @@ struct cliente{
 	int telefone;
 	struct cliente *esq;
     struct cliente *dir;
-};
-struct projeto{
-	string nome;
-	string datai;
-	string dataf;
-	float preco;
-	float pago;
-	cliente lista;
+    vector<projeto> R;
 };
 
 typedef struct cliente no;
@@ -44,6 +45,7 @@ void inserir (arvore &r, int c, string nome, int tel, string end){
 		}
     }
 }
+
 void erd(arvore r){
     if(r!=NULL){
         erd(r->esq);
@@ -51,16 +53,26 @@ void erd(arvore r){
         erd(r->dir);
     }
 }
-void cadastro(vector<projeto> &R, string nome, string datai, string dataf, float preco, float pago){
+void cadastro(arvore &r, string nome, string datai, string dataf, float preco, float pago, string nomec){
 	projeto T;
-	T.nome = nome;
+	T.nomep = nome;
 	T.datai = datai;
 	T.dataf = dataf;
 	T.preco = preco;
 	T.pago = pago;
-	R.push_back(T);
+	T.nomec = nomec;
+	r->R.push_back(T);
 }
-
+no *buscaproj(arvore r, string k){
+	for (int i=0; i < r->R.size();i++){
+		if(r==NULL || r->R[i].nomep == k)
+			return r;
+		if(r->R[i].nomep > k)
+			return buscaproj(r->esq, k);
+		else
+			return buscaproj(r->dir, k);
+	}
+}
 no *busca(arvore r, string k){
 	if(r==NULL || r->nome == k)
 		return r;
@@ -69,8 +81,57 @@ no *busca(arvore r, string k){
 	else
 		return busca(r->dir, k);
 }
+void selecao(arvore r){
+	int menor;
+	for (int i=0; i < r->R.size();i++){
+		menor = i;
+		for (int j=i+1;j<r->R.size();j++){
+			if (r->R[j].nomep < r->R[menor].nomep)
+				menor = j;
+		}
+		swap(r->R[i], r->R[menor]);
+	}
+}
+void proj(arvore r){
+    if(r!=NULL){
+        proj(r->esq);
+        for(int n=0; n<r->R.size(); n++){
+        	selecao(r);
+			cout << "- " << r->R[n].nomep << endl;
+		}
+        proj(r->dir);
+    }
+}
+void cp(arvore r){
+    if(r!=NULL){
+        cp(r->esq);
+        cout << "Cliente: " << r->nome << endl;
+        cout << "Lista de projeto(s):" << endl;
+        for(int i=0; i<r->R.size(); i++){
+        	if(r->R[i].nomec==r->nome){
+        		selecao(r);
+				cout << "- " << r->R[i].nomep << endl;
+			}
+		}
+        cp(r->dir);
+    }
+}
 
-void exclui(vector <projeto> &R, string re){
+void debito(arvore r, string nproj){
+	if(r!=NULL){
+		debito(r->esq, nproj);
+		for(int n=0; n<r->R.size(); n++){
+			if(r->R[n].nomep==nproj){
+				float receber;
+				receber = r->R[n].preco - r->R[n].pago;
+				cout << "Valor a receber: " << receber << endl;
+			}
+		}
+		debito(r->dir, nproj);
+	}
+}
+
+/*void exclui(vector <projeto> &R, string re){
   for (int q=0; q< R.size();q++){
           if (R[q].nome==re){
               R.erase(R.begin()+q);
@@ -97,30 +158,12 @@ void exclui(vector <projeto> &R, string re){
     q->dir = r->dir;
     free (r);
     return q;
-}
-/*void ordena(vector<projeto>&R){
-    int menor;
-    vector<string> q;
-    for(int a=0; a<R.size(); a++){
-    	string coisa = R[a].nome;
-    	q.push_back(coisa);
-	}
-    for(int i=0; i<q.size(); i++){
-        menor = i;
-        for(int j = i+1; j<q.size(); j++){
-            if(q[j]<q[menor])
-                menor = j;
-        }
-        swap(q[i], q[menor]);
-    }
 }*/
 
 int main(){
 	arvore r; r = NULL;
-	vector<projeto> R;
-	vector<projeto> V;
 	projeto T;
-	string nome, end, datai, dataf, n, re, cliente;
+	string nome, nom, end, datai, dataf, n, re, cliente, nproj;
 	int x, c, tel;
 	float preco, pago;
 	cout << "|Menu|" << endl;
@@ -141,10 +184,14 @@ int main(){
 		if (x==2){
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
 			cin >> n;
-			busca(r, n);
-			if(nome==n){
+			arvore a = busca(r, n);
+			if(a==NULL){
+				cout << "Cliente nao encontrado." << endl;
+				system("pause");
+			}
+			else{
 				cout << "Digite o nome do projeto(use _ em vez de espaço): ";
-				cin >> nome;
+				cin >> nom;
 				cout << "Digite a data inicial do projeto: ";
 				cin >> datai;
 				cout << "Digite a data final do projeto: ";
@@ -153,11 +200,7 @@ int main(){
 				cin >> preco;
 				cout << "Digite o valor recebido do projeto: ";
 				cin >> pago;
-				cadastro(R, nome, datai, dataf, preco, pago);
-			}
-			else{
-				cout << "Cliente nao encontrado.";
-				system("pause");
+				cadastro(a, nom, datai, dataf, preco, pago, n);
 			}
 		}
 		if (x==3){
@@ -165,46 +208,25 @@ int main(){
 			system("pause");
 		}
 		if (x==4){
-			/*int particao(vector<projeto> &R, int inicio, int fim){
-				int pivo = R[fim];
-			 	int i = inicio;
-			 	int j = fim-1;
-			 	while( i <= j ){
-			 		while( R[i] < pivo )
-			 			i++;
-			 		while( j >= inicio && R[j] >= pivo )
-			 			j--;
-			 		if( i < j )
-			 		swap(R[i], V[j]);
- 					}
- 				swap(R[fim], V[i]);
- 				return i;
-				}
-			void quickSort(vector<projeto> &R, int inicio, int fim) {
-				if (inicio < fim){
-					int corte = particao(R, inicio, fim);
-					quickSort(R, inicio, corte - 1);
-					quickSort(R, corte + 1, fim);
-				}
-			}*/
 			cout << "|Nome dos projetos|" << endl;
-			//ordena(R);
+			proj(r);
 			system("pause");
 		}
 		if (x==5){
-			/*cout << "Digite um nome: ";
-			cin >> nome;
-			if(nome==a.nome){
-				cout << "Nome projeto: " << a.lista.nome << endl;
-				cout << "Data inicial: " << a.lista.datai << endl;
-				cout << "Data final: " << a.lista.dataf << endl;
-				cout << "Valor: " << a.lista.preco << endl;
-				cout << "Pago: " << a.lista.pago << endl;
-				system("pause");
-			}*/
+			cp(r);
+			system("pause");
 		}
 		if (x==6){
-			cout << "f" << endl;
+			cout << "Digite o nome do projeto: ";
+			cin >> nproj;
+			arvore p = buscaproj(r, nproj);
+			if(p==NULL){
+				cout << "Projeto nao encontrado." << endl;
+			}
+			else{
+				debito(r, nproj);
+				system("pause");
+			}
 		}
 		if (x==7){
 			cout << "g" << endl;
@@ -218,7 +240,7 @@ int main(){
 		if (x==10){
 			cout << "Digite o nome do projeto(use _ em vez de espaço): ";
 			cin >> re;
-			exclui(R, re);	
+			//exclui(R, re);	
 		}
 		if (x==11){
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
@@ -234,3 +256,13 @@ int main(){
 	}
 	cout << "Programa encerrado" << endl;
 }
+/*cout << "Digite um nome: ";
+			cin >> nome;
+			if(nome==a.nome){
+				cout << "Nome projeto: " << a.lista.nome << endl;
+				cout << "Data inicial: " << a.lista.datai << endl;
+				cout << "Data final: " << a.lista.dataf << endl;
+				cout << "Valor: " << a.lista.preco << endl;
+				cout << "Pago: " << a.lista.pago << endl;
+				system("pause");
+			}*/
