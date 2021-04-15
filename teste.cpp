@@ -227,13 +227,23 @@ void imprimicl(arvore r, string c){
 	}
 }
 
-/*void exclui(vector <projeto> R, string re){
-  for (int q=0; q< R.size();q++){
-          if (R[q].nome==re){
-              R.erase(R.begin()+q);
+void exclui(arvore r, string ex){
+	if (r!=NULL){
+		exclui(r->esq, ex);
+		for (int q=0; q < r->R.size(); q++){
+	        if (r->R[q].codigo==ex){	
+	            r->R.erase(r->R.begin()+q);
+        	}
         }
+        exclui(r->dir, ex);
+        for (int q=0; q < r->R.size(); q++){
+	        if (r->R[q].codigo==ex){	
+	            r->R.erase(r->R.begin()+q);
+	        }
+	    }
     }
 }
+
 /*removeraiz (arvore r) {  
     no *p, *q;
     if (r->esq == NULL) {
@@ -260,6 +270,7 @@ int main(){
 	arvore r; r = NULL;
 	projeto T;
 	string nome, nom, end, datai, dataf, n, re, cliente, nproj, c, tel, cod;
+	string ex;
 	int x;
 	float preco, pago;
 	cout << "|Menu|" << endl;
@@ -363,14 +374,21 @@ int main(){
 			}
 		}
 		if (x==10){
-			cout << "Digite o nome do projeto(use _ em vez de espaço): ";
-			cin >> re;
-			//exclui(R, re);	
+			cout << "Digite o codigo do projeto que deseja excluir: ";
+			cin >> ex;
+			arvore te = buscaproj(r, ex);
+			if(te==NULL){
+				cout << "Projeto nao encontrado. " << endl;
+			}
+			else{
+				exclui(r, ex);
+				cout << "Projeto Excluido. " << endl;
+				system("pause");
+			}
 		}
 		if (x==11){
 			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
-			cin >> cliente;
-			
+			cin >> c;
 		}
 		if (x==12){
 			doze(r);
