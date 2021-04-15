@@ -4,6 +4,8 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string>
+#include <string.h>
+#include <ctype.h>
 using namespace std;
 
 struct projeto{
@@ -278,7 +280,7 @@ int main(){
 	cin >> x;
 	while (x!=0){
 		if (x==1){
-			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
+			cout << "Digite o nome do cliente(use _ em vez de espaco): ";
 			cin >> nome;
 			cout << "Digite o CPF(apenas numeros): ";
 			cin >> c;
@@ -289,7 +291,7 @@ int main(){
 			inserir(r, c, nome, tel, end);
 		}
 		if (x==2){
-			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
+			cout << "Digite o nome do cliente(use _ em vez de espaco): ";
 			cin >> n;
 			arvore a = busca(r, n);
 			if(a==NULL){
