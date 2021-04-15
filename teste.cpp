@@ -92,7 +92,7 @@ no *buscac(arvore r, string k){
 		return busca(r->esq, k);
 	else
 		return busca(r->dir, k);
-		
+	}
 		
 void selecao(arvore r){
 	int menor;
@@ -157,6 +157,25 @@ void recebido(arvore r, string nproj){
 		recebido(r->dir, nproj);
 	}
 }
+
+void doze(arvore r){
+	if(r!=NULL){
+		doze(r->esq);
+		for(int n=0; n<r->R.size(); n++){
+			if(r->R[n].preco != r->R[n].pago){
+				cout << "Cliente: " << r->nome << endl;
+				cout << "|Projeto nao pagos|" << endl;
+				for(int z=0; z<r->R.size(); z++){
+					if(r->R[z].nomec == r->nome){
+						cout << "- " << r->R[z].nomep << endl;
+					}
+				}
+			}
+		}
+		doze(r->dir);
+	}
+}
+
 
 void imprimicp(arvore r, string nproj){
 	if (r!=NULL){
@@ -335,7 +354,7 @@ int main(){
 			cout << "Digite o CPF do cliente desejado: " << endl;
 			cin >> c;
 			arvore cl = buscac(r, c);
-			if(td==NULL){
+			if(cl==NULL){
 				cout << "Cliente nao encontrado. " << endl;
 			}
 			else{
@@ -354,9 +373,8 @@ int main(){
 			
 		}
 		if (x==12){
-			cout << "l" << endl;
-			/*cout << "Clientes que ainda devem: " << endl;
-			cout << "Projetos que ainda nao foram pagos: " << endl;*/
+			doze(r);
+			system("pause");
 		}
 		system("cls");
 		cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor ja recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda nao foram pagos\n0 - Encerrar o programa\n";
