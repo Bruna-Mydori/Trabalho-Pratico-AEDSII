@@ -3,9 +3,6 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <string>
-#include <string.h>
-#include <ctype.h>
 using namespace std;
 
 struct projeto{
@@ -30,6 +27,7 @@ struct cliente{
 
 typedef struct cliente no;
 typedef no *arvore;
+int cont = 0;
 void inserir (arvore &r, string c, string nome, string tel, string end){
     if(r==NULL){
 		r = new no;
@@ -68,16 +66,6 @@ void cadastro(arvore &r, string nome, string datai, string dataf, float preco, f
 	T.codigo = cod;
 	r->R.push_back(T);
 }
-no *buscaproj(arvore r, string k){
-	for (int i=0; i < r->R.size();i++){
-		if(r==NULL || r->R[i].codigo == k)
-			return r;
-		if(r->R[i].codigo > k)
-			return buscaproj(r->esq, k);
-		else
-			return buscaproj(r->dir, k);
-	}
-}
 no *busca(arvore r, string k){
 	if(r==NULL || r->nome == k)
 		return r;
@@ -85,6 +73,20 @@ no *busca(arvore r, string k){
 		return busca(r->esq, k);
 	else
 		return busca(r->dir, k);
+}
+
+no *buscaproj(arvore r, string k, string nome){
+	if (r==NULL || r->nome == nome){
+		for (int i=0; i < r->R.size();i++){
+			if(r->R[i].codigo==k){
+				return r;
+			}
+		}
+	}
+	if(r->nome > k)
+		return buscaproj(r->esq, k, nome);
+	else
+		return buscaproj(r->dir, k, nome);
 }
 
 no *buscac(arvore r, string k){
@@ -160,21 +162,21 @@ void recebido(arvore r, string nproj){
 	}
 }
 
-void doze(arvore r){
+void doze(arvore r, int cont){
 	if(r!=NULL){
-		doze(r->esq);
+		doze(r->esq, cont);
+		cont = 0;
 		for(int n=0; n<r->R.size(); n++){
 			if(r->R[n].preco != r->R[n].pago){
-				cout << "Cliente: " << r->nome << endl;
-				cout << "|Projeto nao pagos|" << endl;
-				for(int z=0; z<r->R.size(); z++){
-					if(r->R[z].nomec == r->nome){
-						cout << "- " << r->R[z].nomep << endl;
-					}
+				if(cont==0){
+					cout << "Cliente: " << r->nome << endl;
+					cout << "|Projeto nao pagos|" << endl;	
 				}
+				cont = 1;
+				cout << "- " << r->R[n].nomep << endl;
 			}
 		}
-		doze(r->dir);
+		doze(r->dir, cont);
 	}
 }
 
@@ -246,27 +248,28 @@ void exclui(arvore r, string ex){
     }
 }
 
-/*removeraiz (arvore r) {  
-    no *p, *q;
-    if (r->esq == NULL) {
-       q = r->dir;
-       free (r);
-       return q;
+void removeCliente (arvore r, string c) {  
+  if(r!=NULL){
+        removeCliente(r->esq, c);
+        if (c==r->cpf){
+            if (r->esq==NULL && r->dir==NULL){
+                free(r);
+                r = NULL;
+            } 
+            else if (r->dir==NULL){
+                arvore t = r;
+                r = r->esq;
+                free(t);
+            }
+            else if (r->esq==NULL){
+                arvore t = r;
+                r = r->dir;
+                free(t);
+            }
+        }
+        removeCliente(r->dir, c);
     }
-    p = r; q = r->esq;
-    while (q->dir != NULL) {
-       p = q; q = q->dir;
-    }
-    // q é nó anterior a r na ordem e-r-d
-    // p é pai de q
-    if (p != r) {
-       p->dir = q->esq;
-       q->esq = r->esq;
-    }
-    q->dir = r->dir;
-    free (r);
-    return q;
-}*/
+}
 
 int main(){
 	arvore r; r = NULL;
@@ -328,11 +331,14 @@ int main(){
 			system("pause");
 		}
 		if (x==6){
+			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cin >> nome;
 			cout << "Digite o codigo do projeto: ";
 			cin >> nproj;
-			arvore p = buscaproj(r, nproj);
+			arvore p = buscaproj(r, nproj, nome);
 			if(p==NULL){
 				cout << "Projeto nao encontrado." << endl;
+				system("pause");
 			}
 			else{
 				debito(r, nproj);
@@ -340,11 +346,14 @@ int main(){
 			}
 		}
 		if (x==7){
+			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cin >> nome;
 			cout << "Digite o codigo do projeto: ";
 			cin >> nproj;
-			arvore bi = buscaproj(r, nproj);
+			arvore bi = buscaproj(r, nproj, nome);
 			if(bi==NULL){
 				cout << "Projeto nao encontrado. " << endl;
+				system("pause");
 			}
 			else{
 				recebido(r, nproj);
@@ -352,11 +361,14 @@ int main(){
 			}
 		}
 		if (x==8){
+			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cin >> nome;
 			cout << "Digite o codigo do projeto: " << endl;
 			cin >> nproj;
-			arvore td = buscaproj(r, nproj);
+			arvore td = buscaproj(r, nproj, nome);
 			if(td==NULL){
 				cout << "Projeto nao encontrado. " << endl;
+				system("pause");
 			}
 			else{
 				imprimicp(r, nproj);
@@ -369,6 +381,7 @@ int main(){
 			arvore cl = buscac(r, c);
 			if(cl==NULL){
 				cout << "Cliente nao encontrado. " << endl;
+				system("pause");
 			}
 			else{
 				imprimicl(r, c);
@@ -376,11 +389,14 @@ int main(){
 			}
 		}
 		if (x==10){
+			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cin >> nome;
 			cout << "Digite o codigo do projeto que deseja excluir: ";
 			cin >> ex;
-			arvore te = buscaproj(r, ex);
+			arvore te = buscaproj(r, ex, nome);
 			if(te==NULL){
 				cout << "Projeto nao encontrado. " << endl;
+				system("pause");
 			}
 			else{
 				exclui(r, ex);
@@ -389,11 +405,20 @@ int main(){
 			}
 		}
 		if (x==11){
-			cout << "Digite o nome do cliente(use _ em vez de espaço): ";
+			cout << "Digite o CPF do cliente: ";
 			cin >> c;
+			arvore cli = buscac(r, c);
+			if(cli==NULL){
+				cout << "Cliente nao encontrado. " << endl;
+				system("pause");
+			}
+			else{
+				removeCliente(r, c);
+				system("pause");
+			}
 		}
 		if (x==12){
-			doze(r);
+			doze(r, cont);
 			system("pause");
 		}
 		system("cls");
@@ -402,13 +427,3 @@ int main(){
 	}
 	cout << "Programa encerrado" << endl;
 }
-/*cout << "Digite um nome: ";
-			cin >> nome;
-			if(nome==a.nome){
-				cout << "Nome projeto: " << a.lista.nome << endl;
-				cout << "Data inicial: " << a.lista.datai << endl;
-				cout << "Data final: " << a.lista.dataf << endl;
-				cout << "Valor: " << a.lista.preco << endl;
-				cout << "Pago: " << a.lista.pago << endl;
-				system("pause");
-			}*/
