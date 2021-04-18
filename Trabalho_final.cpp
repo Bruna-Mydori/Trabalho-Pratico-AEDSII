@@ -289,7 +289,7 @@ int main(){
 			cin >> c;
 			cout << "Digite o telefone(apenas numeros): ";
 			cin >> tel;
-			cout << "Digite o endereco(use _ em vez de espaço): ";
+			cout << "Digite o endereco(use _ em vez de espaco): ";
 			cin >> end;
 			inserir(r, c, nome, tel, end);
 		}
@@ -310,7 +310,7 @@ int main(){
 				cin >> datai;
 				cout << "Digite a data final do projeto: ";
 				cin >> dataf;
-				cout << "Digite o preço total do projeto: ";
+				cout << "Digite o preco total do projeto: ";
 				cin >> preco;
 				cout << "Digite o valor recebido do projeto: ";
 				cin >> pago;
@@ -318,6 +318,7 @@ int main(){
 			}
 		}
 		if (x==3){
+			cout << "|Nome dos Clientes|" << endl;
 			erd(r);
 			system("pause");
 		}
@@ -331,7 +332,7 @@ int main(){
 			system("pause");
 		}
 		if (x==6){
-			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cout << "Digite o nome do cliente relacionado ao projeto que esta procurando: ";
 			cin >> nome;
 			cout << "Digite o codigo do projeto: ";
 			cin >> nproj;
@@ -346,7 +347,7 @@ int main(){
 			}
 		}
 		if (x==7){
-			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cout << "Digite o nome do cliente relacionado ao projeto que esta procurando: ";
 			cin >> nome;
 			cout << "Digite o codigo do projeto: ";
 			cin >> nproj;
@@ -361,7 +362,7 @@ int main(){
 			}
 		}
 		if (x==8){
-			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cout << "Digite o nome do cliente relacionado ao projeto que esta procurando: ";
 			cin >> nome;
 			cout << "Digite o codigo do projeto: " << endl;
 			cin >> nproj;
@@ -389,7 +390,7 @@ int main(){
 			}
 		}
 		if (x==10){
-			cout << "Digite o nome do cliente relacionado ao projeto que está procurando: ";
+			cout << "Digite o nome do cliente relacionado ao projeto que esta procurando: ";
 			cin >> nome;
 			cout << "Digite o codigo do projeto que deseja excluir: ";
 			cin >> ex;
@@ -425,5 +426,5 @@ int main(){
 		cout << "1 - Incluir um cliente na lista\n2 - Associar um projeto a um cliente \n3 - Imprimir a lista de clientes\n4 - Imprimir a lista de projetos\n5 - Imprimir a lista de clientes com seus respectivos projetos\n6 - Informar total de valor a receber\n7 - Informar total de valor ja recebido\n8 - Pesquisar um projeto\n9 - Pesquisar um cliente\n10 - Remover um projeto de um cliente\n11 - Remover um cliente\n12 - Listar clientes que ainda devem e quais projetos ainda nao foram pagos\n0 - Encerrar o programa\n";
 		cin >> x;
 	}
-	cout << "Programa encerrado" << endl;
+	cout << "Programa encerrado." << endl;
 }
